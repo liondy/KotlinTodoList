@@ -11,9 +11,9 @@ import android.widget.TextView
 import java.util.*
 
 
-class ListAdapter(private val activity: Activity, private val context: Context) :
-    BaseAdapter() {
+class ListAdapter(private val activity: Activity, private val context: Context) : BaseAdapter() {
     private val listItems: MutableList<String>
+
     fun add(newTodo: String) {
         listItems.add(newTodo)
         notifyDataSetChanged()
@@ -33,17 +33,16 @@ class ListAdapter(private val activity: Activity, private val context: Context) 
 
     override fun getView(
         i: Int,
-        convertView: View,
+        convertView: View?,
         parent: ViewGroup
-    ): View {
-        var convertView = convertView
+    ): View? {
+        var convertView: View? = convertView
         val todo = getItem(i) as String
         val vh: ViewHolder
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.todo_list, parent, false)
-            val item =
-                convertView.findViewById<View>(R.id.item_list) as TextView
-            val trash = convertView.findViewById<ImageButton>(R.id.trash_item)
+            val item = convertView.findViewById<View>(R.id.item_list) as TextView
+            val trash = convertView.findViewById<ImageButton>(R.id.trash_item) as ImageButton
             vh = ViewHolder(item, trash)
             convertView.tag = vh
         } else {
@@ -53,8 +52,7 @@ class ListAdapter(private val activity: Activity, private val context: Context) 
         return convertView
     }
 
-    private inner class ViewHolder(private val item: TextView, private val trash: ImageButton) :
-        View.OnClickListener {
+    private inner class ViewHolder(private val item: TextView, private val trash: ImageButton) : View.OnClickListener {
         private var position = 0
         override fun onClick(v: View) {
             if (v.id == trash.id) {
